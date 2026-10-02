@@ -1,0 +1,88 @@
+\documentclass[a4paper,addpoints]{article}
+\usepackage[italian]{babel}
+\usepackage{amsfonts,amssymb,amsmath, amsthm}
+\usepackage{xcolor}
+\usepackage{pgf,tikz,pgfplots}
+\pgfplotsset{compat=1.15}
+\usepgfplotslibrary{fillbetween}
+\usepackage{mathrsfs}
+\usetikzlibrary{arrows}
+\usetikzlibrary{calc}
+\usepackage{tabu}
+\usepackage{adjustbox}
+
+\usepackage{tikz}
+\usetikzlibrary {shapes , arrows , fit , calc, positioning}
+\tikzset{box/.style={draw, rectangle, rounded corners, thick, node distance =7 em, text width =6 em, text centered, minimum height =2.5 em}}
+\tikzset{line/.style={draw, thick, -latex'}}
+
+\usepackage{tikz-uml}
+\tikzumlset{actor below=0.4cm, fill usecase=white, fill class=white, text=black, draw=black}
+
+\begin{document}
+
+\begin{center}
+\begin{adjustbox}{max width=\textwidth, max height=0.95\textheight}
+\begin{tikzpicture}
+    \begin{umlsystem}[x=6.5] {CarLog}
+        % --- utente non registrato ---
+        \umlusecase[name=reg,   x=8, y=0,      width=3.4cm]{Registrarsi}
+
+        % --- utente registrato ---
+        \umlusecase[name=login, x=5, y=-2,     width=3.4cm]{Effettuare il login}
+        \umlusecase[name=veic,  x=5, y=-3.8,   width=3.4cm]{Registrare un veicolo}
+        \umlusecase[name=man,   x=5, y=-5.6,   width=3.4cm]{Registrare una manutenzione}
+        \umlusecase[name=stor,  x=5, y=-7.4,   width=3.4cm]{Consultare lo storico}
+        \umlusecase[name=rif,   x=5, y=-9.2,   width=3.4cm]{Gestire rifornimenti}
+        \umlusecase[name=spese, x=5, y=-11,    width=3.4cm]{Monitorare le spese}
+        \umlusecase[name=scad,  x=5, y=-12.8,  width=3.4cm]{Consultare le scadenze}
+
+        % --- casi d'uso che estendono ---
+        \umlusecase[name=doc,   x=10.5, y=-5.6,  width=3.4cm]{Salvare documenti e ricevute}
+        \umlusecase[name=filt,  x=10.5, y=-7.4,  width=3.4cm]{Filtrare e ordinare i dati}
+        \umlusecase[name=stat,  x=10.5, y=-11,   width=3.4cm]{Visualizzare le statistiche}
+        \umlusecase[name=prom,  x=10.5, y=-12.8, width=3.4cm]{Impostare promemoria e notifiche}
+
+        % --- amministratore ---
+        \umlusecase[name=gutenti, x=5, y=-16.4, width=3.4cm]{Gestire gli utenti}
+        \umlusecase[name=gveic,   x=5, y=-18.2, width=3.4cm]{Gestire i veicoli degli utenti}
+        \umlusecase[name=gcat,    x=5, y=-20,   width=3.4cm]{Gestire le categorie di manutenzione}
+        \umlusecase[name=gscad,   x=5, y=-21.8, width=3.4cm]{Gestire le scadenze}
+        \umlusecase[name=mod,     x=5, y=-23.6, width=3.4cm]{Modificare o eliminare dati}
+    \end{umlsystem}
+
+    % attori
+    \umlactor[x=8, y=2.5]{Utente non registrato}
+    \umlactor[x=0, y=-7.4]{Utente registrato}
+    \umlactor[x=0, y=-20]{Amministratore}
+
+    % utente non registrato
+    \umlassoc{Utente non registrato}{reg}
+
+    % utente registrato
+    \umlassoc{Utente registrato}{login}
+    \umlassoc{Utente registrato}{veic}
+    \umlassoc{Utente registrato}{man}
+    \umlassoc{Utente registrato}{stor}
+    \umlassoc{Utente registrato}{rif}
+    \umlassoc{Utente registrato}{spese}
+    \umlassoc{Utente registrato}{scad}
+
+    % amministratore
+    \umlassoc{Amministratore}{login}
+    \umlassoc{Amministratore}{gutenti}
+    \umlassoc{Amministratore}{gveic}
+    \umlassoc{Amministratore}{gcat}
+    \umlassoc{Amministratore}{gscad}
+    \umlassoc{Amministratore}{mod}
+
+    % estensioni (dal caso che estende verso il caso base)
+    \umlextend{doc}{man}
+    \umlextend{filt}{stor}
+    \umlextend{stat}{spese}
+    \umlextend{prom}{scad}
+\end{tikzpicture}
+\end{adjustbox}
+\end{center}
+
+\end{document}
