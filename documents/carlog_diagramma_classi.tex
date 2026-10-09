@@ -1,0 +1,186 @@
+\documentclass[a4paper,addpoints]{article}
+\usepackage[italian]{babel}
+\usepackage{amsfonts,amssymb,amsmath, amsthm}
+\usepackage{xcolor}
+\usepackage{pgf,tikz,pgfplots}
+\pgfplotsset{compat=1.15}
+\usepgfplotslibrary{fillbetween}
+\usepackage{mathrsfs}
+\usetikzlibrary{arrows}
+\usetikzlibrary{calc}
+\usepackage{tabu}
+\usepackage{adjustbox}
+
+\usepackage{tikz}
+\usetikzlibrary {shapes , arrows , fit , calc, positioning}
+\tikzset{box/.style={draw, rectangle, rounded corners, thick, node distance =7 em, text width =6 em, text centered, minimum height =2.5 em}}
+\tikzset{line/.style={draw, thick, -latex'}}
+
+% stile delle classi UML (solo TikZ, nessun pacchetto aggiuntivo)
+\tikzset{
+  classe/.style={rectangle split, rectangle split parts=3, draw, thick, fill=white,
+                 text width=4.6cm, align=left, font=\small,
+                 rectangle split part fill={gray!15,white,white}},
+  rel/.style={thick},
+  molt/.style={font=\scriptsize, fill=white, inner sep=1pt}
+}
+\newcommand{\nome}[1]{\hfil\textbf{#1}\hfil}
+
+\begin{document}
+
+\begin{center}
+\begin{adjustbox}{max width=\textwidth, max height=0.95\textheight}
+\begin{tikzpicture}
+
+  % ---------- classi ----------
+  \node[classe] (Amministratore) at (0,9) {
+    \nome{Amministratore}
+    \nodepart{second}\strut
+    \nodepart{third}
+    + gestisciUtenti()  \\
+    + gestisciVeicoli()  \\
+    + gestisciCategorie()  \\
+    + gestisciScadenze() 
+  };
+
+  \node[classe] (Utente) at (0,2) {
+    \nome{Utente}
+    \nodepart{second}
+    - idUtente : int \\
+    - nome : String \\
+    - email : String \\
+    - password : String
+    \nodepart{third}
+    + registrati() : void \\
+    + login() : boolean
+  };
+
+  \node[classe] (Veicolo) at (8,2) {
+    \nome{Veicolo}
+    \nodepart{second}
+    - idVeicolo : int \\
+    - modello : String \\
+    - anno : int \\
+    - targa : String \\
+    - chilometraggio : int
+    \nodepart{third}
+    + calcolaSpeseTotali() : double
+  };
+
+  \node[classe] (Manutenzione) at (16,9) {
+    \nome{Manutenzione}
+    \nodepart{second}
+    - idManutenzione : int \\
+    - tipoIntervento : String \\
+    - data : Date \\
+    - chilometraggio : int \\
+    - costo : double
+    \nodepart{third}\strut
+  };
+
+  \node[classe] (Categoria) at (16,16) {
+    \nome{CategoriaManutenzione}
+    \nodepart{second}
+    - idCategoria : int \\
+    - nome : String
+    \nodepart{third}\strut
+  };
+
+  \node[classe] (Documento) at (8,9) {
+    \nome{Documento}
+    \nodepart{second}
+    - idDocumento : int \\
+    - nomeFile : String \\
+    - tipo : String \\
+    - dataCaricamento : Date
+    \nodepart{third}\strut
+  };
+
+  \node[classe] (Rifornimento) at (8,-6) {
+    \nome{Rifornimento}
+    \nodepart{second}
+    - idRifornimento : int \\
+    - data : Date \\
+    - quantitaCarburante : double \\
+    - costo : double \\
+    - chilometraggio : int
+    \nodepart{third}\strut
+  };
+
+  \node[classe] (Scadenza) at (16,0) {
+    \nome{Scadenza}
+    \nodepart{second}
+    - idScadenza : int \\
+    - tipo : String \\
+    - dataScadenza : Date \\
+    - stato : String
+    \nodepart{third}\strut
+  };
+
+  \node[classe] (Promemoria) at (16,-7) {
+    \nome{Promemoria}
+    \nodepart{second}
+    - idPromemoria : int \\
+    - dataNotifica : Date \\
+    - messaggio : String \\
+    - inviato : boolean
+    \nodepart{third}\strut
+  };
+
+  % ---------- relazioni ----------
+  % ereditariet\`a
+  \draw[rel, -open triangle 60] (Amministratore.south) -- (Utente.north);
+
+  % Utente - Veicolo
+  \draw[rel] (Utente.east) -- (Veicolo.west)
+    node[molt, near start, above] {1}
+    node[molt, near end, above] {0..*}
+    node[midway, above, font=\scriptsize] {possiede};
+
+  % Veicolo - Manutenzione
+  \draw[rel] (Veicolo.north east) -- (Manutenzione.south west)
+    node[molt, near start, above left] {1}
+    node[molt, near end, below right] {0..*}
+    node[midway, above, sloped, font=\scriptsize] {ha};
+
+  % Veicolo - Scadenza
+  \draw[rel] (Veicolo.east) -- (Scadenza.west)
+    node[molt, near start, above] {1}
+    node[molt, near end, above] {0..*}
+    node[midway, above, sloped, font=\scriptsize] {ha};
+
+  % Veicolo - Rifornimento
+  \draw[rel] (Veicolo.south) -- (Rifornimento.north)
+    node[molt, near start, right] {1}
+    node[molt, near end, right] {0..*}
+    node[midway, right, font=\scriptsize] {ha};
+
+  % Veicolo - Documento
+  \draw[rel] (Veicolo.north) -- (Documento.south)
+    node[molt, near start, right] {1}
+    node[molt, near end, right] {0..*}
+    node[midway, right, font=\scriptsize] {allega};
+
+  % Manutenzione - Documento
+  \draw[rel] (Manutenzione.west) -- (Documento.east)
+    node[molt, near start, above] {0..1}
+    node[molt, near end, above] {0..*}
+    node[midway, below, font=\scriptsize] {allega};
+
+  % Manutenzione - Categoria
+  \draw[rel] (Manutenzione.north) -- (Categoria.south)
+    node[molt, near start, right] {0..*}
+    node[molt, near end, right] {1}
+    node[midway, right, font=\scriptsize] {appartiene a};
+
+  % Scadenza - Promemoria
+  \draw[rel] (Scadenza.south) -- (Promemoria.north)
+    node[molt, near start, right] {1}
+    node[molt, near end, right] {0..*}
+    node[midway, right, font=\scriptsize] {genera};
+
+\end{tikzpicture}
+\end{adjustbox}
+\end{center}
+
+\end{document}
