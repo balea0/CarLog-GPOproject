@@ -1,4 +1,4 @@
-CarLog
+#CarLog
 CarLog è una web app dedicata alla gestione completa della propria automobile. L’obiettivo è raccogliere in un unico spazio tutte le informazioni utili sul veicolo, rendendo più semplice controllare manutenzione, spese e scadenze.
 L’utente può registrare e gestire uno o più veicoli, inserendo informazioni come modello, anno, targa e chilometraggio. Può registrare gli interventi di manutenzione, indicando il tipo di lavoro effettuato, la data, il chilometraggio e il costo, e consultare successivamente lo storico delle manutenzioni.
 La piattaforma permette inoltre di gestire i rifornimenti, registrando quantità di carburante, costo e chilometraggio, e di monitorare le spese sostenute per il veicolo. I dati possono essere organizzati tramite diversi criteri, come data, anno, chilometraggio, tipo di manutenzione, costo e scadenza.
