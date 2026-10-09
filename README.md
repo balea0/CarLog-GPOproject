@@ -1,4 +1,4 @@
-# CarLog – Descrizione della Web App
+# CarLog 
 
 **CarLog** è una web app dedicata alla gestione completa della propria automobile. L’obiettivo è raccogliere in un unico spazio tutte le informazioni utili sul veicolo, rendendo più semplice controllare manutenzione, spese e scadenze.
 
